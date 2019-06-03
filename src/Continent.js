@@ -22,11 +22,12 @@ export class Continent{
     }else return false;
   }
   isInfect(infect){
-    var close2 = Math.floor(Math.random() * (100/infect));
+    var close2 = Math.floor(Math.random() *(10000/infect));
+    //console.log(infect);
     if(this.infected > 0){
       return true;
     }else {
-      if(close2 <= 25){
+      if(close2 <= 20){
         this.infected++;
       return true;
       }
