@@ -4,6 +4,9 @@ import $ from 'jquery';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css';
+// import video from './img/video.mp4';
+
+
 function eachDay(){
 
 }
@@ -18,13 +21,22 @@ $(document).ready(function() {
   let lethal = 0;
   let infect = 0;
   let vis = 0;
-  let dis = new Disease(0, lethal, infect, vis);
-
+  let countBreak = 0;
+  let bank = 10;
+  let tempBank = 10;
+  let resistance = 0;
+  //let dis = new Disease(0, lethal, infect, vis);
+  $("#bankVal").text("Bank: " + bank)
   $("#diseForm").submit(function(event){
+    $("#bankVal").text("Bank: " + bank)
+    countBreak++;
     let hold = parseInt($("#dise").val());
-    let dis = new Disease(hold, lethal, 1, vis);
+    resistance ++;
+    let dis = new Disease(hold, lethal, infect, vis);
 
-  if(!numHold.includes(hold)){
+  if(!numHold.includes(hold) && bank >= 4){
+    bank -= 4;
+    $("#bankVal").text("Bank: " + bank)
     numHold.push(hold);
     symptHold.push(dis.addSymptom());
 
@@ -40,15 +52,21 @@ $(document).ready(function() {
           }, 2000);
           break;
         }else{
+          if(bank >= 4){
+            bank -= 4;
+            resistance ++;
         symptHold[numHold.indexOf(hold)] = dis.update(symptHold[numHold.indexOf(hold)]);
+          }
         break;
         }
       }
     }
-    console.log(symptHold);
+    $("#bankVal").text("Bank: " + bank)
+    console.log(symptHold); 
   }
   for(var u = 0; u < symptHold.length; u++){
-    if(symptHold[u].severity < 3){
+    if(symptHold[u].severity < 3 && tempBank >= 4){
+      tempBank -= 4;
     var arrHold = dis.addTraits(symptHold[u]);
     lethal = arrHold[0];
     infect = arrHold[1];
@@ -59,49 +77,61 @@ $(document).ready(function() {
   $("#dis1").text(`Lethality: ${dis.lethal} `);
   $("#dis2").text(`Infection Rate: ${dis.infect} `);
   $("#dis3").text(`Visibility: ${dis.vis} `);
+  
   function startTime(){
+    
+    
     var count = 0;
     let cont1 = new Continent(45848070, 0, 45848070, 0, "Asia");
-    let cont2 = new Continent(13200387, 0, 13200387, 0, "Africa");
+    let cont2 = new Continent(13200387, 0, 13200387, 1, "Africa");
     let cont3 = new Continent(7431026, 0, 7431026, 0, "Europe");
     let cont4 = new Continent(4319984, 0, 4319984, 0, "South America");
     let cont5 = new Continent(3664968, 0, 3664968, 0, "North America");
     let cont6 = new Continent(534802, 0, 534802, 0, "Australia");
     let cont7 = new Continent(1, 0, 1, 0, "Antartica");
+    if(countBreak <= 1){
     setInterval(function(){
-      count++;
+      console.log("---------------------");
+            count++;
+            bank += 2;
+            tempBank += 2;
+      $("#bankVal").text("Bank: " + bank)
+      //console.log(count);
       //console.log(infect);
       //cont1.spread(dis.infect);
-      cont2.spread(infect);
-      cont3.spread(infect);
-      cont4.spread(infect);
-      cont5.spread(infect);
-      cont6.spread(infect);
-      cont7.spread(infect);
+      cont2.spread(infect, vis, lethal, resistance, countBreak);
+      cont3.spread(infect, vis, lethal, resistance, countBreak);
+      cont4.spread(infect, vis, lethal, resistance, countBreak);
+      cont5.spread(infect, vis, lethal, resistance, countBreak);
+      cont6.spread(infect, vis, lethal, resistance, countBreak);
+      cont7.spread(infect, vis, lethal, resistance, countBreak);
+      countBreak++;
       if(cont1.infected > 0){
       console.log("Asia: infected");
       }
-      if(cont2.infected > 0){
-      console.log("Africa: infected");
-      }
-      if(cont3.infected > 0){
-      console.log("Europe: infected");
-      }
-      if(cont4.infected > 0){
-      console.log("South America: infected");
-      }
-      if(cont5.infected > 0){
-      console.log("North America: infected");
-      }
-      if(cont6.infected > 0){
-      console.log("Australia: infected");
-      }
-      if(cont7.infected > 0){
-      console.log("Antartica: infected");
-      }
-      console.log("-----------");
-    }, 1000);
+      // if(cont2.infected > 0){
+      // console.log("Africa: infected");
+      // }
+      // if(cont3.infected > 0){
+      // console.log("Europe: infected");
+      // }
+      // if(cont4.infected > 0){
+      // console.log("South America: infected");
+      // }
+      // if(cont5.infected > 0){
+      // console.log("North America: infected");
+      // }
+      // if(cont6.infected > 0){
+      // console.log("Australia: infected");
+      // }
+      // if(cont7.infected > 0){
+      // console.log("Antartica: infected");
+      // }
+      // console.log("-----------");
+    }, 10000);
   }
+  }
+
   startTime();
     event.preventDefault();
   });

@@ -1,4 +1,13 @@
 body{
     background-color: #859bbf;
     color: #324159;
+    background-image: url(img/worldmap.jpg);
+    min-height: 100%;
+    min-width: 1024px;
+      
+    background-size: cover;
+    height: 100%;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    
 }

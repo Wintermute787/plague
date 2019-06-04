@@ -61,6 +61,28 @@ module.exports = {
                 loader: "eslint-loader"
             },
             {
+                
+                test: /\.(png|jpe?g|gif)$/,
+                use: [
+                        {
+                            loader: 'file-loader',
+                            options: {},
+                        }
+                ]
+            },
+            {
+                
+                test: /\.(mov|mp4)$/,
+                use: [
+                        {
+                            loader: 'file-loader',
+                            options: {
+                                name: 'video.mp4'
+                            },
+                        }
+                ]
+            },
+            {
                 test: /\.m?js$/,
                 exclude: /(node_modules|bower_components)/,
                 use: {
